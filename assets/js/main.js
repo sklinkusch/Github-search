@@ -5,7 +5,6 @@ class GithubUser {
     this.id = "3a6a22eb32c03ecfd02b";
     this.secret = "6c1e72cc2af26bdab69798e0ce85f86fb00c3584";
     this.updateInfo();
-    this.updateRepos();
   }
   getDate(timestamp) {
     const dateStringArray = timestamp.substr(0, 10).split("-");
@@ -21,6 +20,9 @@ class GithubUser {
   }
   set name(newName) {
     this.githubName = newName;
+  }
+  printRepos(repos) {
+    console.log(repos);
   }
   printUserInfo(info) {
     const header = document.querySelector("h1");
@@ -51,6 +53,7 @@ class GithubUser {
     </div>
           `;
     description.innerHTML = html;
+    this.updateRepos();
   }
   get repos() {
     return this._repos;
@@ -71,10 +74,10 @@ class GithubUser {
     const numberRepos = this.repos;
     const reposUrl = `https://api.github.com/users/${
       this.githubName
-      }/repos?per_page=${numberRepos}client_id=${this.id}&client_secret=${this.secret}`;
+      }/repos?per_page=${numberRepos}&client_id=${this.id}&client_secret=${this.secret}`;
     fetch(reposUrl)
       .then(response => response.json())
-      .then(repos => console.log(repos))
+      .then(repos => this.printRepos(repos))
       .catch(error => console.log(`Oops, an error again: ${error}`));
   }
 }
