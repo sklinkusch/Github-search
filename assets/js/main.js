@@ -12,8 +12,8 @@ class GithubUser {
     let [year, month, day] = dateArray;
     month--;
     const date = new Date(year, month, day);
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return date.toLocaleString('en-US', options);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleString("en-US", options);
   }
   get name() {
     return this.githubName;
@@ -23,33 +23,106 @@ class GithubUser {
   }
   printRepos(repos) {
     console.log(repos);
+    const repoContainer = document.querySelector("#repos");
+    console.log(repos.filter(repo => repo.private == true));
+    const html = repos
+      .map(repo => {
+        const {
+          name,
+          description,
+          created_at,
+          language,
+          html_url,
+          has_pages,
+          pushed_at
+        } = repo;
+        let shortDescription;
+        if (description != null) {
+          shortDescription =
+            description.length > 50
+              ? `${description.substr(0, 50)}...`
+              : description;
+        } else {
+          shortDescription = null;
+        }
+        return `
+      <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+      <h2>${name}</h2>
+      <div class="card-body">
+      <ul>
+      <li>${shortDescription}</li>
+      <li>main language: ${language}</li>
+      <li>created on ${this.getDate(created_at)}</li>
+      <li>last push on ${this.getDate(pushed_at)}</li>
+      <li>published on GitHub Pages: ${has_pages ? "yes" : "no"}</li>
+      </ul>
+      <div class="d-flex justify-content-between align-items-center">
+      <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-outline-secondary">repository</button>
+      ${
+        has_pages
+          ? `<button type="button" class="btn btn-sm btn-outline-secondary">GitHub Pages</button>`
+          : ""
+      }
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      `;
+      })
+      .join("");
+    repoContainer.innerHTML = html;
   }
   printUserInfo(info) {
     const header = document.querySelector("h1");
     const image = document.querySelector("#user_avatar");
     const description = document.querySelector("#user_description");
-    const { name, login, avatar_url, company, location, email, public_repos, followers, following, public_gists, blog, created_at, html_url } = info;
+    const {
+      name,
+      login,
+      avatar_url,
+      company,
+      location,
+      email,
+      public_repos,
+      followers,
+      following,
+      public_gists,
+      blog,
+      created_at,
+      html_url
+    } = info;
     const insertName = name == null ? "" : name;
     const insertCompany = company == null ? "" : company;
     this.repos = public_repos;
-    const insertEmail = email == null ? "no email address provided" : `<a href="mailto:${email}">${email}</a>`;
-    const insertBlog = blog == null ? "no website provided" : `<a href="${blog}" target=_blank>${blog}</a>`;
+    const insertEmail =
+      email == null
+        ? "no email address provided"
+        : `<a href="mailto:${email}">${email}</a>`;
+    const insertBlog =
+      blog == null
+        ? "no website provided"
+        : `<a href="${blog}" target=_blank>${blog}</a>`;
     const username = `${login}`;
     header.innerHTML = username;
     image.src = avatar_url;
     const html = `
       <div class="sk-desc-row">
-        <div class="sk-bold">Real name:</div> <div>${insertName}</div>
-        <div class="sk-bold">Location:</div> <div>${location}</div>
-        <div class="sk-bold">Organization:</div> <div>${insertCompany}</div>
-        <div class="sk-bold">Email:</div> <div>${insertEmail}</div>
-        <div class="sk-bold">Number of public repositories:</div> <div>${public_repos}</div>
-        <div class="sk-bold">Number of gists:</div> <div>${public_gists}</div>
-        <div class="sk-bold">Followers:</div> <div>${followers}</div>
-        <div class="sk-bold">Following:</div> <div>${following}</div>
-        <div class="sk-bold">Created at:</div> <div>${(this.getDate(created_at))}</div>
-        <div class="sk-bold">Website:</div> <div>${insertBlog}</div>
-        <div class="sk-bold">GitHub:</div> <div><a href="${html_url}" taget=_blank>${html_url}</a></div>
+        <div class="sk-bold sk-left-align">Real name:</div> <div class="sk-right-align">${insertName}</div>
+        <div class="sk-bold sk-left-align">Location:</div> <div class="sk-right-align">${location}</div>
+        <div class="sk-bold sk-left-align">Organization:</div> <div class="sk-right-align">${insertCompany}</div>
+        <div class="sk-bold sk-left-align">Email:</div> <div class="sk-right-align">${insertEmail}</div>
+        <div class="sk-bold sk-left-align">Number of public repositories:</div> <div class="sk-right-align">${public_repos}</div>
+        <div class="sk-bold sk-left-align">Number of gists:</div> <div class="sk-right-align">${public_gists}</div>
+        <div class="sk-bold sk-left-align">Followers:</div> <div class="sk-right-align">${followers}</div>
+        <div class="sk-bold sk-left-align">Following:</div> <div class="sk-right-align">${following}</div>
+        <div class="sk-bold sk-left-align">Created at:</div> <div class="sk-right-align">${this.getDate(
+          created_at
+        )}</div>
+        <div class="sk-bold sk-left-align">Website:</div> <div class="sk-right-align">${insertBlog}</div>
+        <div class="sk-bold sk-left-align">GitHub:</div> <div class="sk-right-align"><a href="${html_url}" target=_blank>${html_url}</a></div>
     </div>
           `;
     description.innerHTML = html;
@@ -62,9 +135,9 @@ class GithubUser {
     this._repos = value;
   }
   updateInfo() {
-    const url = `https://api.github.com/users/${
-      this.githubName
-      }?client_id = ${this.id}& client_secret=${this.secret} `;
+    const url = `https://api.github.com/users/${this.githubName}?client_id=${
+      this.id
+    }&client_secret=${this.secret}`;
     fetch(url)
       .then(response => response.json())
       .then(userinfo => this.printUserInfo(userinfo))
@@ -74,7 +147,9 @@ class GithubUser {
     const numberRepos = this.repos;
     const reposUrl = `https://api.github.com/users/${
       this.githubName
-      }/repos?per_page=${numberRepos}&client_id=${this.id}&client_secret=${this.secret}`;
+    }/repos?per_page=${numberRepos}&client_id=${this.id}&client_secret=${
+      this.secret
+    }`;
     fetch(reposUrl)
       .then(response => response.json())
       .then(repos => this.printRepos(repos))
@@ -82,4 +157,4 @@ class GithubUser {
   }
 }
 
-const stefan = new GithubUser("sklinkusch", null);
+const user = new GithubUser("sklinkusch", null);
