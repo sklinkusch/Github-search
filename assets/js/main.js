@@ -110,6 +110,7 @@ class GithubUser {
       html_url
     } = info;
     const insertName = name == null ? "" : name;
+    const insertLocation = location == null ? "" : location;
     const insertCompany = company == null ? "" : company;
     this.repos = public_repos;
     const insertEmail =
@@ -126,7 +127,7 @@ class GithubUser {
     const html = `
       <div class="sk-desc-row">
         <div class="sk-bold sk-left-align">Real name:</div> <div class="sk-right-align">${insertName}</div>
-        <div class="sk-bold sk-left-align">Location:</div> <div class="sk-right-align">${location}</div>
+        <div class="sk-bold sk-left-align">Location:</div> <div class="sk-right-align">${insertLocation}</div>
         <div class="sk-bold sk-left-align">Organization:</div> <div class="sk-right-align">${insertCompany}</div>
         <div class="sk-bold sk-left-align">Email:</div> <div class="sk-right-align">${insertEmail}</div>
         <div class="sk-bold sk-left-align">Number of public repositories:</div> <div class="sk-right-align">${public_repos}</div>
