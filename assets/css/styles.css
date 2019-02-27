@@ -1,0 +1,28 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; }
+
+div.userInfo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+  div.userInfo-container div,
+  div.userInfo-container p {
+    flex: 0 0 50%; }
+
+div.sk-desc-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between; }
+  div.sk-desc-row div {
+    flex: 0 0 45%; }
+
+.sk-left-align {
+  text-align: left; }
+
+.sk-right-align {
+  text-align: right; }
+
+/*# sourceMappingURL=styles.css.map */
