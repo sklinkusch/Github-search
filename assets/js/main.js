@@ -22,9 +22,7 @@ class GithubUser {
     this.githubName = newName;
   }
   printRepos(repos) {
-    console.log(repos);
     const repoContainer = document.querySelector("#repos");
-    console.log(repos.filter(repo => repo.private == true));
     const html = repos
       .map(repo => {
         const {
@@ -45,6 +43,7 @@ class GithubUser {
         } else {
           shortDescription = null;
         }
+        const githubPages = `https://${this.name}.github.io/${name}`;
         return `
       <div class="col-md-4">
       <div class="card mb-4 shadow-sm">
@@ -59,10 +58,10 @@ class GithubUser {
       </ul>
       <div class="d-flex justify-content-between align-items-center">
       <div class="btn-group">
-      <button type="button" class="btn btn-sm btn-outline-secondary">repository</button>
+      <a href="${html_url}" target=_blank><button type="button" class="btn btn-sm btn-outline-secondary">repository</button></a>
       ${
         has_pages
-          ? `<button type="button" class="btn btn-sm btn-outline-secondary">GitHub Pages</button>`
+          ? `<a href="${githubPages}" target=_blank><button type="button" class="btn btn-sm btn-outline-secondary">GitHub Pages</button></a>`
           : ""
       }
       </div>
