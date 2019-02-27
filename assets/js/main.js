@@ -5,6 +5,22 @@ class GithubUser {
     this.id = "3a6a22eb32c03ecfd02b";
     this.secret = "6c1e72cc2af26bdab69798e0ce85f86fb00c3584";
     this.updateInfo();
+    this.addEventListeners();
+  }
+  addEventListeners() {
+    const searchbutton = document.querySelector("#searchbutton");
+    const searchfield = document.querySelector("#searchfield");
+    searchbutton.addEventListener("click", () => {
+      const searchValue = searchfield.value;
+      let user;
+      if (searchValue == "") {
+        user = "sklinkusch";
+      } else {
+        user = searchValue;
+      }
+      this.name = user;
+      this.updateInfo();
+    });
   }
   getDate(timestamp) {
     const dateStringArray = timestamp.substr(0, 10).split("-");
@@ -134,7 +150,7 @@ class GithubUser {
     this._repos = value;
   }
   updateInfo() {
-    const url = `https://api.github.com/users/${this.githubName}?client_id=${
+    const url = `https://api.github.com/users/${this.name}?client_id=${
       this.id
     }&client_secret=${this.secret}`;
     fetch(url)
