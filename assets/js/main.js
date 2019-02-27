@@ -66,7 +66,7 @@ class GithubUser {
       <h2>${name}</h2>
       <div class="card-body">
       <ul>
-      <li>${shortDescription}</li>
+      ${shortDescription != null ? `<li>${shortDescription}</li>` : ""}
       <li>main language: ${language}</li>
       <li>created on ${this.getDate(created_at)}</li>
       <li>last push on ${this.getDate(pushed_at)}</li>
