@@ -67,7 +67,7 @@ class GithubUser {
       <div class="card-body">
       <ul>
       ${shortDescription != null ? `<li>${shortDescription}</li>` : ""}
-      <li>main language: ${language}</li>
+      ${language != null ? `<li>main language: ${language}</li>` : ""}
       <li>created on ${this.getDate(created_at)}</li>
       <li>last push on ${this.getDate(pushed_at)}</li>
       <li>published on GitHub Pages: ${has_pages ? "yes" : "no"}</li>
@@ -76,10 +76,10 @@ class GithubUser {
       <div class="btn-group">
       <a href="${html_url}" target=_blank><button type="button" class="btn btn-sm btn-outline-secondary">repository</button></a>
       ${
-        has_pages
-          ? `<a href="${githubPages}" target=_blank><button type="button" class="btn btn-sm btn-outline-secondary">GitHub Pages</button></a>`
-          : ""
-      }
+          has_pages
+            ? `<a href="${githubPages}" target=_blank><button type="button" class="btn btn-sm btn-outline-secondary">GitHub Pages</button></a>`
+            : ""
+          }
       </div>
       </div>
       </div>
@@ -135,8 +135,8 @@ class GithubUser {
         <div class="sk-bold sk-left-align">Followers:</div> <div class="sk-right-align">${followers}</div>
         <div class="sk-bold sk-left-align">Following:</div> <div class="sk-right-align">${following}</div>
         <div class="sk-bold sk-left-align">Created at:</div> <div class="sk-right-align">${this.getDate(
-          created_at
-        )}</div>
+      created_at
+    )}</div>
         <div class="sk-bold sk-left-align">Website:</div> <div class="sk-right-align">${insertBlog}</div>
         <div class="sk-bold sk-left-align">GitHub:</div> <div class="sk-right-align"><a href="${html_url}" target=_blank>${html_url}</a></div>
     </div>
@@ -153,7 +153,7 @@ class GithubUser {
   updateInfo() {
     const url = `https://api.github.com/users/${this.name}?client_id=${
       this.id
-    }&client_secret=${this.secret}`;
+      }&client_secret=${this.secret}`;
     fetch(url)
       .then(response => response.json())
       .then(userinfo => this.printUserInfo(userinfo))
@@ -163,9 +163,9 @@ class GithubUser {
     const numberRepos = this.repos;
     const reposUrl = `https://api.github.com/users/${
       this.githubName
-    }/repos?per_page=${numberRepos}&client_id=${this.id}&client_secret=${
+      }/repos?per_page=${numberRepos}&client_id=${this.id}&client_secret=${
       this.secret
-    }`;
+      }`;
     fetch(reposUrl)
       .then(response => response.json())
       .then(repos => this.printRepos(repos))
